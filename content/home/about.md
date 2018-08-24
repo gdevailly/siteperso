@@ -45,10 +45,10 @@ team there in 2017, after a postdoctoral position in Anagha Joshi's group at the
 
 Now a computational biologist, Guillaume Devailly started at the bench
 [studying](https://www.ncbi.nlm.nih.gov/pubmed/26007656)
-binding sites of the DNA methylation interpret MBD2 during oncogenic transformation
-during is PhD. During his postdoc, he developed visualisation and webtools
-of transcriptomic and epigenomic data, including the [Heat*seq](http://www.heatstarseq.roslin.ed.ac.uk/)
-and the [Perepigenomics](http://www.perepigenomics.roslin.ed.ac.uk/). 
+binding sites of the DNA methylation reader MBD2 during oncogenic transformation
+during is PhD. During his postdoc, he developed visualisations and webtools
+of transcriptomic and epigenomic data, including [Heat*seq](http://www.heatstarseq.roslin.ed.ac.uk/)
+and [PEREpigenomics](http://www.perepigenomics.roslin.ed.ac.uk/). 
 He is building up his geneticist skills at INRA, doing eQTL detection in pigs, and
 planning projects in satiety regulation through induced epi-mutations.
 

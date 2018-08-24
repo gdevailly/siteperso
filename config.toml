@@ -232,11 +232,6 @@ enableGitInfo = false
   #   Full list: https://jpswalsh.github.io/academicons/
 
   [[params.social]]
-    icon = "envelope"
-    icon_pack = "fa"
-    link = "mailto:guillaume.devailly@inra.fr"
-
-  [[params.social]]
     icon = "orcid"
     icon_pack = "ai"
     link = "https://orcid.org/0000-0001-8878-9357"
@@ -278,7 +273,7 @@ enableGitInfo = false
 
 [[menu.main]]
   name = "Publications"
-  url = "#publications_selected"
+  url = "/publication/"
   weight = 2
 
 # Link to a PDF of your resume/CV from the menu.

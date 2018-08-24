@@ -14,3 +14,5 @@ list_format = 1
 image = ""
 caption = ""
 +++
+
+This is a personnal blog. Its content does not reflect the views of my employer.
