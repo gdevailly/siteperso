@@ -251,6 +251,11 @@ enableGitInfo = false
     icon_pack = "fa"
     link = "https://twitter.com/G_Devailly"
 
+  [[params.social]]
+    icon = "envelope"
+    icon_pack = "fa"
+    link = "mailto:guillaume.devailly -at- inra.fr"
+
   # Link to a PDF of your resume/CV from the About widget.
   # To enable, copy your resume/CV to `static/files/cv.pdf` and uncomment the lines below.
   # [[params.social]]
@@ -276,22 +281,27 @@ enableGitInfo = false
   url = "/publication/"
   weight = 2
 
+[[menu.main]]
+  name = "Contact"
+  url = "#contact"
+  weight = 3
+
 # Link to a PDF of your resume/CV from the menu.
 # To enable, copy your resume/CV to `static/files/cv.pdf` and uncomment the lines below.
 [[menu.main]]
    name = "French CV (pdf)"
    url = "files/cv-gdevailly-fr.pdf"
-   weight = 3
+   weight = 4
 
 [[menu.main]]
   name = "Blog"
   url = "/post/"
-  weight = 4
+  weight = 5
 
 [[menu.main]]
   name = "Search site"
   url = "#search"
-  weight = 5
+  weight = 6
 
 
 # Search.
