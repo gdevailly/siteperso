@@ -15,7 +15,7 @@ math: true
 
 
 
-<p>When sorting a large table according to a specific metric (let’s say gene expression value), it is frequent to have ties for certain value (for example, 0 expression values). In most version of sorting, the order of the ties is preserved by the sorting. For example, with base function order:</p>
+<p>When sorting a large table according to a specific metric (let’s say gene expression value), it is frequent to have ties for certain values (for example, 0 expression values). In most version of sorting, the order of the ties is preserved by the sorting. For example, with base function order:</p>
 <pre class="r"><code>suppressPackageStartupMessages(library(tidyverse))
 
 gene_exp &lt;- tibble(
@@ -27,13 +27,13 @@ gene_exp
 ## # A tibble: 9 x 2
 ##   gene_name   exp
 ##   &lt;chr&gt;     &lt;dbl&gt;
-## 1 ENSG01     2.79
+## 1 ENSG01     1.97
 ## 2 ENSG02     0   
-## 3 ENSG03     2.03
+## 3 ENSG03     4.20
 ## 4 ENSG04     0   
-## 5 ENSG05     1.33
+## 5 ENSG05     2.14
 ## 6 ENSG06     0   
-## 7 ENSG07     2.18
+## 7 ENSG07     1.40
 ## 8 ENSG08     0   
 ## 9 ENSG09     0
 
@@ -41,10 +41,10 @@ gene_exp[order(gene_exp$exp, decreasing = TRUE), ]
 ## # A tibble: 9 x 2
 ##   gene_name   exp
 ##   &lt;chr&gt;     &lt;dbl&gt;
-## 1 ENSG01     2.79
-## 2 ENSG07     2.18
-## 3 ENSG03     2.03
-## 4 ENSG05     1.33
+## 1 ENSG03     4.20
+## 2 ENSG05     2.14
+## 3 ENSG01     1.97
+## 4 ENSG07     1.40
 ## 5 ENSG02     0   
 ## 6 ENSG04     0   
 ## 7 ENSG06     0   
@@ -56,10 +56,10 @@ gene_exp[order(gene_exp$exp, decreasing = TRUE), ]
 ## # A tibble: 9 x 2
 ##   gene_name   exp
 ##   &lt;chr&gt;     &lt;dbl&gt;
-## 1 ENSG01     2.79
-## 2 ENSG07     2.18
-## 3 ENSG03     2.03
-## 4 ENSG05     1.33
+## 1 ENSG03     4.20
+## 2 ENSG05     2.14
+## 3 ENSG01     1.97
+## 4 ENSG07     1.40
 ## 5 ENSG02     0   
 ## 6 ENSG04     0   
 ## 7 ENSG06     0   
@@ -70,7 +70,7 @@ gene_exp[order(gene_exp$exp, decreasing = TRUE), ]
 <img src="/post/2018-12-07-how-to-suffle-ties-after-a-sort_files/E005_unshuffled.png" alt="H3K36me3 at middle exons, unshuffled." />
 <p class="caption">H3K36me3 at middle exons, unshuffled.</p>
 </div>
-<p>Here, many exons have <span class="math inline">\(\psi = 1\)</span>, and there order default to a genomic coordinate ordering. We can see some darker horizontal stripes, that may reflect contiguous chromatin domains, but distract us from the main point(s).</p>
+<p>Here, many exons have <span class="math inline">\(\psi = 1\)</span>, and their order default to a genomic coordinate ordering. We can see some dark horizontal stripes, that may reflect contiguous chromatin domains but distract us from the main point(s).</p>
 <p>It might be better to shuffle the rows of our table that correspond to ties after our sorting.</p>
 <p>Thinking about how to do it, the first approach that came to my mind was a split - apply - combine, where we first split the data frame, apply a shuffling if needed, and combine it back. With our toy example:</p>
 <pre class="r"><code>gene_exp %&gt;%
@@ -81,15 +81,15 @@ gene_exp[order(gene_exp$exp, decreasing = TRUE), ]
 ## # A tibble: 9 x 2
 ##   gene_name   exp
 ##   &lt;chr&gt;     &lt;dbl&gt;
-## 1 ENSG01     2.79
-## 2 ENSG07     2.18
-## 3 ENSG03     2.03
-## 4 ENSG05     1.33
-## 5 ENSG06     0   
+## 1 ENSG03     4.20
+## 2 ENSG05     2.14
+## 3 ENSG01     1.97
+## 4 ENSG07     1.40
+## 5 ENSG02     0   
 ## 6 ENSG09     0   
-## 7 ENSG08     0   
-## 8 ENSG02     0   
-## 9 ENSG04     0</code></pre>
+## 7 ENSG04     0   
+## 8 ENSG06     0   
+## 9 ENSG08     0</code></pre>
 <p>Here our ties are correctly shuffled. \o/</p>
 <p>Actually, never mind, the grouping is totally unnecessary, one can simply shuffle the dataset first, and sort it later:</p>
 <pre class="r"><code>gene_exp %&gt;%
@@ -98,14 +98,14 @@ gene_exp[order(gene_exp$exp, decreasing = TRUE), ]
 ## # A tibble: 9 x 2
 ##   gene_name   exp
 ##   &lt;chr&gt;     &lt;dbl&gt;
-## 1 ENSG01     2.79
-## 2 ENSG07     2.18
-## 3 ENSG03     2.03
-## 4 ENSG05     1.33
-## 5 ENSG02     0   
-## 6 ENSG04     0   
-## 7 ENSG06     0   
-## 8 ENSG08     0   
+## 1 ENSG03     4.20
+## 2 ENSG05     2.14
+## 3 ENSG01     1.97
+## 4 ENSG07     1.40
+## 5 ENSG06     0   
+## 6 ENSG08     0   
+## 7 ENSG02     0   
+## 8 ENSG04     0   
 ## 9 ENSG09     0</code></pre>
 <p>A second approach could be to generate a column of random value and use it to breaks the ties in the sort:</p>
 <pre class="r"><code>gene_exp %&gt;%
@@ -115,15 +115,15 @@ gene_exp[order(gene_exp$exp, decreasing = TRUE), ]
 ## # A tibble: 9 x 2
 ##   gene_name   exp
 ##   &lt;chr&gt;     &lt;dbl&gt;
-## 1 ENSG01     2.79
-## 2 ENSG07     2.18
-## 3 ENSG03     2.03
-## 4 ENSG05     1.33
+## 1 ENSG03     4.20
+## 2 ENSG05     2.14
+## 3 ENSG01     1.97
+## 4 ENSG07     1.40
 ## 5 ENSG08     0   
-## 6 ENSG09     0   
-## 7 ENSG02     0   
-## 8 ENSG04     0   
-## 9 ENSG06     0</code></pre>
+## 6 ENSG04     0   
+## 7 ENSG06     0   
+## 8 ENSG02     0   
+## 9 ENSG09     0</code></pre>
 <p>It’s working too! \o/</p>
 <p>There is even no need to create the new column at all:</p>
 <pre class="r"><code>gene_exp %&gt;%
@@ -131,15 +131,15 @@ gene_exp[order(gene_exp$exp, decreasing = TRUE), ]
 ## # A tibble: 9 x 2
 ##   gene_name   exp
 ##   &lt;chr&gt;     &lt;dbl&gt;
-## 1 ENSG01     2.79
-## 2 ENSG07     2.18
-## 3 ENSG03     2.03
-## 4 ENSG05     1.33
-## 5 ENSG04     0   
-## 6 ENSG06     0   
-## 7 ENSG09     0   
+## 1 ENSG03     4.20
+## 2 ENSG05     2.14
+## 3 ENSG01     1.97
+## 4 ENSG07     1.40
+## 5 ENSG09     0   
+## 6 ENSG08     0   
+## 7 ENSG06     0   
 ## 8 ENSG02     0   
-## 9 ENSG08     0</code></pre>
+## 9 ENSG04     0</code></pre>
 <p>Since we now have two approaches, a benchmark is needed to compare them speed-wise. We will do it on a larger dataset to be a bit more realistic:</p>
 <pre class="r"><code>gene_exp &lt;- tibble(
     gene_name = paste0(&quot;ENSG0&quot;, 1:10000),
@@ -148,18 +148,18 @@ gene_exp[order(gene_exp$exp, decreasing = TRUE), ]
 
 gene_exp
 ## # A tibble: 10,000 x 2
-##    gene_name   exp
-##    &lt;chr&gt;     &lt;dbl&gt;
-##  1 ENSG01    3.23 
-##  2 ENSG02    0    
-##  3 ENSG03    2.78 
-##  4 ENSG04    0    
-##  5 ENSG05    1.02 
-##  6 ENSG06    0    
-##  7 ENSG07    0.695
-##  8 ENSG08    0    
-##  9 ENSG09    0.779
-## 10 ENSG010   0    
+##    gene_name    exp
+##    &lt;chr&gt;      &lt;dbl&gt;
+##  1 ENSG01     2.38 
+##  2 ENSG02     0    
+##  3 ENSG03     1.65 
+##  4 ENSG04     0    
+##  5 ENSG05    -0.267
+##  6 ENSG06     0    
+##  7 ENSG07     0.690
+##  8 ENSG08     0    
+##  9 ENSG09     3.29 
+## 10 ENSG010    0    
 ## # ... with 9,990 more rows
 
 library(microbenchmark)
