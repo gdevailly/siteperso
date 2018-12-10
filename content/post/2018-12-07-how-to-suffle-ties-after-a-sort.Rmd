@@ -16,7 +16,7 @@ math: true
 When sorting a large table according to a specific metric (let's say gene expression value),
 it is frequent to have ties for certain values (for example, 0 expression values).
 In most version of sorting, the order of the ties is preserved by the sorting.
-For example, with base function order:
+For example, with the base function `order`:
 
 ```{r, collapse=TRUE}
 suppressPackageStartupMessages(library(tidyverse))
