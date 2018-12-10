@@ -37,7 +37,7 @@ gene_exp %>%
     arrange(desc(exp))
 ```
 
-This can lead to ungracefull artefacts in some plots. 
+This can lead to ungraceful artefacts in some plots. 
 For example, in the plot bellow we look at a certain epigenetic mark (H3K36me3)
 at middle exons (neither first nor last exons) according to the exon inclusion ratio metric
 (or $\psi$):
@@ -45,7 +45,7 @@ at middle exons (neither first nor last exons) according to the exon inclusion r
 ![H3K36me3 at middle exons, unshuffled.](/post/2018-12-07-how-to-suffle-ties-after-a-sort_files/E005_unshuffled.png)
 
 Here, many exons have $\psi = 1$, and there order default to a genomic coordinate ordering.
-We can see some darker horizontal stripes, that may reflect contigous chromatin domains,
+We can see some darker horizontal stripes, that may reflect contiguous chromatin domains,
 but distract us from the main point(s). 
 
 It might be better to shuffle the rows of our table that correspond to ties after our sorting.
@@ -61,7 +61,7 @@ gene_exp %>%
 ```
 Here our ties are correctly shuffled. \\o/
 
-Actually, never mind, the grouping is totaly unecessary,
+Actually, never mind, the grouping is totally unnecessary,
 one can simply shuffle the dataset first, and sort it later:
 ```{r, collapse=TRUE}
 gene_exp %>%
