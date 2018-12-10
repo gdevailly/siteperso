@@ -14,7 +14,7 @@ math: true
 ---
 
 When sorting a large table according to a specific metric (let's say gene expression value),
-it is frequent to have ties for certain value (for example, 0 expression values).
+it is frequent to have ties for certain values (for example, 0 expression values).
 In most version of sorting, the order of the ties is preserved by the sorting.
 For example, with base function order:
 
@@ -44,8 +44,8 @@ at middle exons (neither first nor last exons) according to the exon inclusion r
 
 ![H3K36me3 at middle exons, unshuffled.](/post/2018-12-07-how-to-suffle-ties-after-a-sort_files/E005_unshuffled.png)
 
-Here, many exons have $\psi = 1$, and there order default to a genomic coordinate ordering.
-We can see some darker horizontal stripes, that may reflect contiguous chromatin domains,
+Here, many exons have $\psi = 1$, and their order default to a genomic coordinate ordering.
+We can see some dark horizontal stripes, that may reflect contiguous chromatin domains
 but distract us from the main point(s). 
 
 It might be better to shuffle the rows of our table that correspond to ties after our sorting.
