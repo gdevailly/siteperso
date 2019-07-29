@@ -1,0 +1,41 @@
+---
+title: The shape of DNA
+author: Guillaume Devailly
+date: '2019-07-23'
+slug: the-shape-of-dna
+categories:
+  - opinion
+tags:
+  - DNA
+header:
+  caption: ''
+  image: ''
+  preview: yes
+draft: true
+---
+
+Molecular biologists and biochemists are an easily triggered crowd, 
+especially when it's a matter of DNA representation.
+Many of them will be triggered when the looping of the DNA will be mis-represented as an left-handed helix instead of an right-handed one
+(what we mean by that is that when one looks at DNA from 'within' the helix, they turn clok-wise as they get more distant).
+I tends to be not quite easily offended by this mistake, as I have hard tim remebering if (B-)DNA is right handed or left handed, 
+and I also tend to forget what right-handed and left-handed means in the context of an helix.
+
+One of my personal trigger is that the DNA double-helix has **two grooves of inequal size**, one big **major groove**, 
+and a narrow **minor groove**.
+
+I sometimes do complain about that:
+
+<blockquote class="twitter-tweet"><p lang="en" dir="ltr">Should someone tell them about the whole major/minor groove thing? <a href="https://t.co/KPq9iFkUge">https://t.co/KPq9iFkUge</a></p>&mdash; Guillaume Devailly (@G_Devailly) <a href="https://twitter.com/G_Devailly/status/1073290319716847616?ref_src=twsrc%5Etfw">December 13, 2018</a></blockquote> <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script> 
+
+as others do:
+
+<blockquote class="twitter-tweet" data-conversation="none"><p lang="en" dir="ltr">GREAT! But &lt;pedant=ON&gt; NO MAJOR/MINOR GROOVE!!! See example below from <a href="https://twitter.com/PDBeurope?ref_src=twsrc%5Etfw">@PDBeurope</a> &lt;/pedant=OFF&gt; :-) ;-)<a href="https://t.co/1rX87naLgg">https://t.co/1rX87naLgg</a></p>&mdash; Geoff Barton 🇪🇺 (@gjbarton) <a href="https://twitter.com/gjbarton/status/1073265247832678401?ref_src=twsrc%5Etfw">December 13, 2018</a></blockquote> <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script> 
+
+and guess what, complaining on twitter can sometime have an impact!
+
+<blockquote class="twitter-tweet"><p lang="en" dir="ltr">The great christmas elves in the <a href="https://twitter.com/emblebi?ref_src=twsrc%5Etfw">@emblebi</a> comms department have created your handy, right handed (right) from left handed (wrong), minor groove containing card for genomics comms professionals. (Even more Hi res media available on demand...) <a href="https://t.co/mQpZHvqDO6">pic.twitter.com/mQpZHvqDO6</a></p>&mdash; Ewan Birney (@ewanbirney) <a href="https://twitter.com/ewanbirney/status/1073615201470169088?ref_src=twsrc%5Etfw">December 14, 2018</a></blockquote> <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script> 
+
+
+My other pet peeve is when artistic views of DNA shows unessecary "asperities" in the texture of DNA to "make it more real"
+while still representing a very basic rope-ladder shape.
