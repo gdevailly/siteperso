@@ -22,7 +22,8 @@ I tends to be not quite easily offended by this mistake, as I have hard tim reme
 and I also tend to forget what right-handed and left-handed means in the context of an helix.
 
 One of my personal trigger is that the DNA double-helix has **two grooves of inequal size**, one big **major groove**, 
-and a narrow **minor groove**.
+and a narrow **minor groove**. It matters because transcription factors can bind either to the major groove
+or to the minor groove, and the rules governing their sequence specificity won't be the same in each cases.
 
 I sometimes do complain about that:
 
@@ -39,3 +40,6 @@ and guess what, complaining on twitter can sometime have an impact!
 
 My other pet peeve is when artistic views of DNA shows unessecary "asperities" in the texture of DNA to "make it more real"
 while still representing a very basic rope-ladder shape.
+
+For example:
+![Bad artistic view of DNA](/img/posts/dna-zdnet.jpg)
