@@ -282,26 +282,31 @@ enableGitInfo = false
   weight = 2
 
 [[menu.main]]
+  name = "Projects"
+  url = "/project/"
+  weight = 3
+
+[[menu.main]]
   name = "Contact"
   url = "#contact"
-  weight = 3
+  weight = 4
 
 # Link to a PDF of your resume/CV from the menu.
 # To enable, copy your resume/CV to `static/files/cv.pdf` and uncomment the lines below.
 [[menu.main]]
    name = "French CV (pdf)"
    url = "files/cv-gdevailly-fr.pdf"
-   weight = 4
+   weight = 5
 
 [[menu.main]]
   name = "Blog"
   url = "/post/"
-  weight = 5
+  weight = 6
 
 [[menu.main]]
   name = "Search site"
   url = "#search"
-  weight = 6
+  weight = 7
 
 
 # Search.
