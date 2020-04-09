@@ -38,7 +38,7 @@ weight = 5
 # Biography
 
 Guillaume Devailly is a researcher in farm animal genetics and epigenetics at
-[GenPhySE](https://genphyse.toulouse.inra.fr/), [INRA](http://institut.inra.fr/en),
+[GenPhySE](https://genphyse.toulouse.inra.fr/), [INRAE](https://www.inrae.fr/en/),
 located in Toulouse, France. He joined the [GenEpi](https://genphyse.toulouse.inra.fr/groups/genepi)
 team there in 2017, after a postdoctoral position in Anagha Joshi's group at the 
 [Roslin Institute](https://www.ed.ac.uk/roslin) (Edinburgh, UK).
@@ -48,7 +48,7 @@ Now a computational biologist, Guillaume Devailly started at the bench
 binding sites of the DNA methylation reader MBD2 during oncogenic transformation
 during is PhD. During his postdoc, he developed visualisations and webtools
 of transcriptomic and epigenomic data, including [Heat*seq](http://www.heatstarseq.roslin.ed.ac.uk/)
-and [PEREpigenomics](http://www.perepigenomics.roslin.ed.ac.uk/). 
-He is building up his geneticist skills at INRA, doing eQTL detection in pigs, and
+and [PEREpigenomics](https://joshiapps.cbu.uib.no/perepigenomics_app/). 
+He is building up his geneticist skills at INRAE, doing eQTL detection in pigs, and
 planning projects in satiety regulation through induced epi-mutations.
 
