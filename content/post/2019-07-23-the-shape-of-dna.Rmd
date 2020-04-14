@@ -88,7 +88,7 @@ Let me try to be clearer:
 
 
 Thankfully, the brilliant [PDB's protein of the month team](http://pdb101.rcsb.org/motm/23) offers us some hope. Let's all admire the DNA molecule:
-![Good DNA](/img/posts/good-dna.gif)
+![](/img/posts/good-dna.gif)
 
 ---
 
