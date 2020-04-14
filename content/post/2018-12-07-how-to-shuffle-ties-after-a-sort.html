@@ -1,0 +1,200 @@
+---
+title: How to shuffle ties after a sort?
+author: Guillaume Devailly
+date: '2018-12-07'
+slug: how-to-shuffle-ties-after-a-sort
+categories:
+  - R
+tags:
+  - R
+header:
+  caption: ''
+  image: ''
+math: true 
+---
+
+
+
+<p>When sorting a large table according to a specific metric (let’s say gene expression value),
+it is frequent to have ties for certain values (for example, 0 expression values).
+In most version of sorting, the order of the ties is preserved by the sorting.
+For example, with the base function <code>order</code>:</p>
+<pre class="r"><code>suppressPackageStartupMessages(library(tidyverse))
+
+gene_exp &lt;- tibble(
+    gene_name = paste0(&quot;ENSG0&quot;, 1:9),
+    exp = c(rbind(rnorm(4, mean = 2), c(0, 0, 0, 0)), 0)
+)
+
+gene_exp
+## # A tibble: 9 x 2
+##   gene_name   exp
+##   &lt;chr&gt;     &lt;dbl&gt;
+## 1 ENSG01     2.60
+## 2 ENSG02     0   
+## 3 ENSG03     2.21
+## 4 ENSG04     0   
+## 5 ENSG05     2.05
+## 6 ENSG06     0   
+## 7 ENSG07     2.36
+## 8 ENSG08     0   
+## 9 ENSG09     0
+
+gene_exp[order(gene_exp$exp, decreasing = TRUE), ]
+## # A tibble: 9 x 2
+##   gene_name   exp
+##   &lt;chr&gt;     &lt;dbl&gt;
+## 1 ENSG01     2.60
+## 2 ENSG07     2.36
+## 3 ENSG03     2.21
+## 4 ENSG05     2.05
+## 5 ENSG02     0   
+## 6 ENSG04     0   
+## 7 ENSG06     0   
+## 8 ENSG08     0   
+## 9 ENSG09     0</code></pre>
+<p>Or with <code>dplyr::arrange</code>:</p>
+<pre class="r"><code>gene_exp %&gt;%
+    arrange(desc(exp))
+## # A tibble: 9 x 2
+##   gene_name   exp
+##   &lt;chr&gt;     &lt;dbl&gt;
+## 1 ENSG01     2.60
+## 2 ENSG07     2.36
+## 3 ENSG03     2.21
+## 4 ENSG05     2.05
+## 5 ENSG02     0   
+## 6 ENSG04     0   
+## 7 ENSG06     0   
+## 8 ENSG08     0   
+## 9 ENSG09     0</code></pre>
+<p>This can lead to ungraceful artefacts in some plots.
+For example, in the plot bellow we look at a certain epigenetic mark (H3K36me3)
+at middle exons (neither first nor last exons) according to the exon inclusion ratio metric
+(or <span class="math inline">\(\psi\)</span>):</p>
+<div class="figure">
+<img src="/post/2018-12-07-how-to-shuffle-ties-after-a-sort_files/E005_unshuffled.png" alt="H3K36me3 at middle exons, unshuffled." />
+<p class="caption">H3K36me3 at middle exons, unshuffled.</p>
+</div>
+<p>Here, many exons have <span class="math inline">\(\psi = 1\)</span>, and their order default to a genomic coordinate ordering.
+We can see some dark horizontal stripes, that may reflect contiguous chromatin domains
+but distract us from the main point(s).</p>
+<p>It might be better to shuffle the rows of our table that correspond to ties after our sorting.</p>
+<p>Thinking about how to do it, the first approach that came to my mind was a split - apply - combine,
+where we first split the data frame, apply a shuffling if needed, and combine it back. With our toy example:</p>
+<pre class="r"><code>gene_exp %&gt;%
+    group_by(exp) %&gt;%
+    sample_frac(size = 1, replace = FALSE) %&gt;% # shuffeling within each group
+    ungroup() %&gt;%
+    arrange(desc(exp))
+## # A tibble: 9 x 2
+##   gene_name   exp
+##   &lt;chr&gt;     &lt;dbl&gt;
+## 1 ENSG01     2.60
+## 2 ENSG07     2.36
+## 3 ENSG03     2.21
+## 4 ENSG05     2.05
+## 5 ENSG06     0   
+## 6 ENSG09     0   
+## 7 ENSG02     0   
+## 8 ENSG08     0   
+## 9 ENSG04     0</code></pre>
+<p>Here our ties are correctly shuffled. \o/</p>
+<p>Actually, never mind, the grouping is totally unnecessary,
+one can simply shuffle the dataset first, and sort it later:</p>
+<pre class="r"><code>gene_exp %&gt;%
+    sample_frac(size = 1, replace = FALSE) %&gt;% # shuffeling within each group
+    arrange(desc(exp))
+## # A tibble: 9 x 2
+##   gene_name   exp
+##   &lt;chr&gt;     &lt;dbl&gt;
+## 1 ENSG01     2.60
+## 2 ENSG07     2.36
+## 3 ENSG03     2.21
+## 4 ENSG05     2.05
+## 5 ENSG09     0   
+## 6 ENSG02     0   
+## 7 ENSG08     0   
+## 8 ENSG06     0   
+## 9 ENSG04     0</code></pre>
+<p>A second approach could be to generate a column of random value and
+use it to breaks the ties in the sort:</p>
+<pre class="r"><code>gene_exp %&gt;%
+    mutate(rand = runif(nrow(gene_exp))) %&gt;%
+    arrange(desc(exp), rand) %&gt;%
+    select(-rand)
+## # A tibble: 9 x 2
+##   gene_name   exp
+##   &lt;chr&gt;     &lt;dbl&gt;
+## 1 ENSG01     2.60
+## 2 ENSG07     2.36
+## 3 ENSG03     2.21
+## 4 ENSG05     2.05
+## 5 ENSG08     0   
+## 6 ENSG02     0   
+## 7 ENSG04     0   
+## 8 ENSG09     0   
+## 9 ENSG06     0</code></pre>
+<p>It’s working too! \o/</p>
+<p>There is even no need to create the new column at all:</p>
+<pre class="r"><code>gene_exp %&gt;%
+    arrange(desc(exp), runif(nrow(gene_exp)))
+## # A tibble: 9 x 2
+##   gene_name   exp
+##   &lt;chr&gt;     &lt;dbl&gt;
+## 1 ENSG01     2.60
+## 2 ENSG07     2.36
+## 3 ENSG03     2.21
+## 4 ENSG05     2.05
+## 5 ENSG04     0   
+## 6 ENSG09     0   
+## 7 ENSG06     0   
+## 8 ENSG08     0   
+## 9 ENSG02     0</code></pre>
+<p>Since we now have two approaches, a benchmark is needed to compare them speed-wise.
+We will do it on a larger dataset to be a bit more realistic:</p>
+<pre class="r"><code>gene_exp &lt;- tibble(
+    gene_name = paste0(&quot;ENSG0&quot;, 1:10000),
+    exp = c(rbind(rnorm(5000, mean = 2), rep(0, 5000)))
+)
+
+gene_exp
+## # A tibble: 10,000 x 2
+##    gene_name    exp
+##    &lt;chr&gt;      &lt;dbl&gt;
+##  1 ENSG01    -0.399
+##  2 ENSG02     0    
+##  3 ENSG03     1.22 
+##  4 ENSG04     0    
+##  5 ENSG05     1.62 
+##  6 ENSG06     0    
+##  7 ENSG07     1.91 
+##  8 ENSG08     0    
+##  9 ENSG09     2.37 
+## 10 ENSG010    0    
+## # ... with 9,990 more rows
+
+library(microbenchmark)
+
+microbenchmark(
+    
+    &quot;shuffle_sort&quot; = gene_exp %&gt;%
+        sample_frac(size = 1, replace = FALSE) %&gt;% 
+        arrange(desc(exp)),
+    
+    &quot;random_column_unif&quot; = gene_exp %&gt;%
+        arrange(desc(exp), runif(nrow(gene_exp))),
+    
+    &quot;random_column_norm&quot; = gene_exp %&gt;%
+        arrange(desc(exp), rnorm(nrow(gene_exp)))
+    
+) %&gt;% autoplot() +
+    theme_bw(base_size = 16)
+## Coordinate system already present. Adding new coordinate system, which will replace the existing one.</code></pre>
+<p><img src="/post/2018-12-07-how-to-shuffle-ties-after-a-sort_files/figure-html/unnamed-chunk-7-1.png" width="672" /></p>
+<p>And now I have stacked profiles of epigenetic marks that smooth-out unwanted irregularities,
+by shuffling the ties:</p>
+<div class="figure">
+<img src="/post/2018-12-07-how-to-shuffle-ties-after-a-sort_files/E005_shuffled.png" alt="H3K36me3 at middle exons, ties are now shuffled" />
+<p class="caption">H3K36me3 at middle exons, ties are now shuffled</p>
+</div>

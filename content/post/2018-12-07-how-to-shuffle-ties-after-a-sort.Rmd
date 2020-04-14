@@ -1,8 +1,8 @@
 ---
-title: How to suffle ties after a sort?
+title: How to shuffle ties after a sort?
 author: Guillaume Devailly
 date: '2018-12-07'
-slug: how-to-suffle-ties-after-a-sort
+slug: how-to-shuffle-ties-after-a-sort
 categories:
   - R
 tags:
@@ -42,7 +42,7 @@ For example, in the plot bellow we look at a certain epigenetic mark (H3K36me3)
 at middle exons (neither first nor last exons) according to the exon inclusion ratio metric
 (or $\psi$):
 
-![H3K36me3 at middle exons, unshuffled.](/post/2018-12-07-how-to-suffle-ties-after-a-sort_files/E005_unshuffled.png)
+![H3K36me3 at middle exons, unshuffled.](/post/2018-12-07-how-to-shuffle-ties-after-a-sort_files/E005_unshuffled.png)
 
 Here, many exons have $\psi = 1$, and their order default to a genomic coordinate ordering.
 We can see some dark horizontal stripes, that may reflect contiguous chromatin domains
@@ -117,4 +117,4 @@ microbenchmark(
 And now I have stacked profiles of epigenetic marks that smooth-out unwanted irregularities,
 by shuffling the ties:
 
-![H3K36me3 at middle exons, ties are now shuffled](/post/2018-12-07-how-to-suffle-ties-after-a-sort_files/E005_shuffled.png)
+![H3K36me3 at middle exons, ties are now shuffled](/post/2018-12-07-how-to-shuffle-ties-after-a-sort_files/E005_shuffled.png)
