@@ -28,9 +28,9 @@ Many of them will be triggered when the looping of the DNA is misrepresented as 
 I am not quite offended by this mistake, as I hardly remember if (B-)DNA is right-handed or left-handed, 
 and what right-handed and left-handed means in the context of an helix.
 
-One of my personal trigger is that the DNA double-helix has **two grooves of unequal size**, one big **major groove**, 
+I am paying more attention to the fact that the DNA double-helix has **two grooves of unequal size**, one big **major groove**, 
 and a narrow **minor groove**. It matters because transcription factors can bind either to the major groove
-or to the minor groove, and the rules governing their sequence specificity won't be the same in each cases.
+or to the minor groove, and the rules governing their sequence specificity won't be the same in each case.
 
 I sometimes do complain about that:
 
