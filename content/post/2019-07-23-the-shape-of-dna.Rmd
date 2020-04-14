@@ -176,7 +176,7 @@ We will now render our first scene. Rayrender is basically ray-tracing on CPU, w
 A scene is composed of objects (here described in the `mol` tibble), and a camera that has a location, and point to something.
 We centred our object, so we will tell the camera to point at `c(0, 0, 0)`. It's probably best if at first the camera is somewhere outside of the object. I played a bit with the `lookfrom` parameter, and found the values `c(60, 0, -10)` reasonably satisfying. So behold the following rendering:
 
-```{r scientific, fig.width=8, fig.height=5, fig.cap="scientificly accurate, non artistic view of DNA."}
+```{r scientific, fig.width=8, fig.height=5, fig.cap="Scientifically accurate, non artistic view of DNA."}
 render_scene(
     mol,
     lookfrom = c(60, 0, -10),
@@ -191,7 +191,7 @@ render_scene(
 
 Now let's try to render this non-artistic, a bit boring, view of DNA into an artistic one. I'm no artist, but let's put a darker background, two light sources of different colours, and an invisible metallic mirror in the background to generate some dirty reflections to make the scene less empty. Let's also pick less boring but fairly neutral colours for the atoms, and fiddle with the camera `aperture` and `focal distance`.
 
-```{r artistic, fig.width=8, fig.height=5, fig.cap="scientificly accurate, totaly artistic view of DNA."}
+```{r artistic, fig.width=8, fig.height=5, fig.cap="Scientifically accurate, totally artistic view of DNA."}
 elref <- tribble(
     ~atom, ~atomic_mass, ~color,
     "C", 12, "azure1",
