@@ -5,10 +5,12 @@ date: '2019-07-23'
 slug: the-shape-of-dna
 categories:
   - opinion
+  - R
 tags:
   - DNA
   - rayrender
   - rant
+  - R
 header:
   caption: ''
   image: ''
@@ -52,7 +54,7 @@ My other pet peeve is when artistic views of DNA show unnecessary "asperities" i
 For examples:
 ![](/img/posts/bad_dna_ladder.png)
 
-These visualisations are so popular that any efforts to name and shame will results in either naming the entire universe or cherry picking some for biased reasons. I'll cherry pick one nonetheless: the homepage of [Genome Biology](https://genomebiology.biomedcentral.com/). `r emo::ji("expressionless")`
+These visualisations are so popular that any efforts to name and shame will results in either naming the entire universe or hand picking some for biased reasons. I'll hand pick one nonetheless: the homepage of [Genome Biology](https://genomebiology.biomedcentral.com/). `r emo::ji("expressionless")`
 
 ![](/img/posts/bad_dna_gb.png)
 
@@ -73,8 +75,7 @@ And the endless list of bad DNA visualisation goes on.
 
 ---
 
-I find those view annoying, because we have known the exact structure of the B DNA helix since quite
-a long time, with many 3D models freely available! One could take those, apply a bumpy fluorescent blue texture in front of a black background
+I find those view annoying, because we have known the exact structure of the B DNA helix for a long time, with many 3D models freely available! One could take those, apply a bumpy fluorescent blue texture in front of a black background
 and produce similarly impressive artistic views that would be **much closer to the reality**.
 
 Let me try to be clearer:
@@ -86,7 +87,7 @@ Let me try to be clearer:
 - it is about one **bad** type of artistic view that is representing DNA as a "rope and ladder" while adding asperities to make it more *realistic*, ignoring that the atomic structures of DNA had been known since before I was born.
 
 
-Thankfully, the brilliant [PDB's protein of the month team](http://pdb101.rcsb.org/motm/23) offers us some hope. Let's all admire the DNA molecule:
+Thankfully, the brilliant [PDB's molecule of the month team](http://pdb101.rcsb.org/motm/23) offers us some hope. Let's all admire the DNA molecule:
 ![](/img/posts/good-dna.gif)
 
 ---
@@ -108,7 +109,7 @@ dna <- read.pdb("1BNA")
 head(dna$atom)
 ```
 
-We will keep only the lines and column that we will use, notably getting rid of a few water molecules.
+We keep only the lines and column that we will use, notably getting rid of a few water molecules.
 
 ```{r cleaning}
 library(dplyr)
@@ -119,9 +120,9 @@ dnamod <- filter(dna$atom, type == "ATOM" ) %>%
 head(dnamod)
 ```
 
-We will use the `rayrender` [package](https://github.com/tylermorganwall/rayrender) to hand-craft our scientifically accurate artistic view of a DNA molecule. It is a quite new ray-tracing tool, not particularly designed to render macro-molecules. This means that we will have to do some dirty work ourselves.
+We use the `rayrender` [package](https://github.com/tylermorganwall/rayrender) to hand-craft our scientifically accurate artistic view of a DNA molecule. It is a quite new ray-tracing tool, not particularly designed to render macro-molecules. This means that we have to do some dirty work ourselves.
 
-First we will centre the molecule coordinates, to be able to point the virtual camera to the centre of the DNA molecule by simply targeting the XYZ point: `c(0, 0, 0)`.
+First we centre the molecule coordinates, to be able to point the virtual camera to the centre of the DNA molecule by simply targeting the XYZ point: `c(0, 0, 0)`.
 
 ```{r centering}
 summarise_if(dnamod, is.numeric, min)
@@ -135,7 +136,7 @@ summarise_if(dnamod, is.numeric, min)
 summarise_if(dnamod, is.numeric, max)
 ```
 
-We will create a look-up table containing some details about each atom in the molecule. We will use some standard, non-artistic, colours first:
+We create a look-up table containing some details about each atom in the molecule. We use some standard, non-artistic, colours first:
 
 ```{r look-up}
 unique(dnamod$atom)
@@ -149,7 +150,7 @@ elref <- tribble(
 )
 ```
 
-Now let's build our model. Rayrender's function `sphere()` is not entirely vectorised. The XYZ parameters seem vectorised: you can render several spheres with one function call by passing vectors in `x, y, z` parameters.  But as far as I understand, they will have to share the non vectorised `material` parameter. Therefore we will call `sphere()` 4 times, one for the carbon atoms, one for the oxygen, one for the nitrogen, and one for the phosphorus. Using `purrr` to be fancy:
+Now let's build our model. Rayrender's function `sphere()` is not entirely vectorised. The `x, y, z` parameters seem vectorised: you can render several spheres with one function call by passing vectors in `x, y, z` parameters.  But as far as I understand, they have to share the non vectorised `material` parameter. Therefore we call `sphere()` 4 times, one for the carbon atoms, one for the oxygen, one for the nitrogen, and one for the phosphorus, using `purrr::map_dfr()` to be fancy:
 
 ```{r object_building}
 library(rayrender)
@@ -162,7 +163,9 @@ mol <-  map_dfr(
         dnamo = filter(dnamod, atom == ato)
         sphere(
             x = dnamo$x, y = dnamo$y, z = dnamo$z,
-            radius = 0.4 * melref$atomic_mass^(1/3), # radius is proportionnal to the cubic root of the atomic mass. The 0.4 is a magic number to that the visualisation doesn't look to bad.
+            radius = 0.4 * melref$atomic_mass^(1/3),
+            # radius is proportionnal to the cubic root of the atomic mass. 
+            # 0.4 is a magic number leading to a visualisation that doesn't look too bad.
             material = diffuse(color = melref$color)
         )
     }
@@ -170,10 +173,10 @@ mol <-  map_dfr(
 
 ```
 
-We will now render our first scene. Rayrender is basically ray-tracing on CPU, which means it is quite slow. So it's best to render small scenes first to find the appropriate parameters, before rendering a beautiful one once you are happy with the scene.
+We now render our first scene. Rayrender is basically ray-tracing on CPU, which means it is quite slow. So it's best to render small scenes first to find the appropriate parameters, before rendering a beautiful one once you are happy with the scene.
 
 A scene is composed of objects (here described in the `mol` tibble), and a camera that has a location, and point to something.
-We centred our object, so we will tell the camera to point at `c(0, 0, 0)`. It's probably best if at first the camera is somewhere outside of the object. I played a bit with the `lookfrom` parameter, and found the values `c(60, 0, -10)` reasonably satisfying. So behold the following rendering:
+We centred our object, so we tell the camera to point at `c(0, 0, 0)`. It's probably best if the camera is somewhere outside of the object. I played a bit with the `lookfrom` parameter, and found the values `c(60, 0, -10)` reasonably satisfying. So behold the following rendering:
 
 ```{r scientific, fig.width=8, fig.height=5, fig.cap="Scientifically accurate, non artistic view of DNA."}
 render_scene(
@@ -188,7 +191,7 @@ render_scene(
 
 ---
 
-Now let's try to render this non-artistic, a bit boring, view of DNA into an artistic one. I'm no artist, but let's put a darker background, two light sources of different colours, and an invisible metallic mirror in the background to generate some dirty reflections to make the scene less empty. Let's also pick less boring but fairly neutral colours for the atoms, and fiddle with the camera `aperture` and `focal distance`.
+Now let's try to render this non-artistic, a bit boring, view of DNA into an artistic one. I'm no artist, but let's put a darker background, two light sources of different colours, and an invisible metallic mirror in the background to generate some dirty reflections to make the scene less empty. Let's also pick fairly neutral colours for the atoms, and fiddle with the camera `aperture` and `focal distance`.
 
 ```{r artistic, fig.width=8, fig.height=5, fig.cap="Scientifically accurate, totally artistic view of DNA."}
 elref <- tribble(
@@ -235,11 +238,13 @@ render_scene(
 
 ```
 
-Not bad! My main regret is that the PDB DNA structure `1BNA` is only 12 nucleotide long. A longer DNA model might be more suitable for artistic representations, but I was too lazy to search for one or build one myself (too bad for you, [3BSE](https://www.rcsb.org/structure/3BSE)).
+Not bad! My main regret is that the PDB DNA structure `1BNA` is only 12 nucleotide long. A longer DNA model might be more suitable for artistic representations, but I was too lazy to search for one or build one myself (too bad for you, 16-nucleoride long structure [3BSE](https://www.rcsb.org/structure/3BSE)).
 
 ---
 
-To conclude, I'll propose a stay-at-home challenge: try to render your own scientifically accurate artistic view of the DNA molecule, for example by changing a few parameters from this post' script. Then post it on twitter mentioning me ([G_Devailly](https://twitter.com/G_Devailly)), the winner will be retweeted! `r emo::ji("tada")`
+To conclude, I'll offer a stay-at-home challenge: try to render your own scientifically accurate artistic view of the DNA molecule, for example by changing a few parameters from this post' script. Then post it on twitter mentioning me ([G_Devailly](https://twitter.com/G_Devailly)), the winner will be retweeted! `r emo::ji("tada")`
+
+*Thanks to schneu for kindly providing some proofreading.*
 
 ---
 R session details:
