@@ -16,6 +16,12 @@ header:
 draft: false
 ---
 
+## Graphical abstract:
+
+![](/img/posts/graphical_abstract.png)
+
+---
+
 Molecular biologists and biochemists are an easily triggered crowd, 
 especially when it's a matter of DNA representation.
 Many of them will be triggered when the looping of the DNA will be misrepresented as a left-handed helix instead of a right-handed one
@@ -223,7 +229,7 @@ render_scene(
     mol,
     lookfrom = c(60, 0, -10),
     lookat = c(0, 0, 0),
-    aperture=0.8, focal_distance = 70,  clamp_value = 5,
+    aperture=0.8, focal_distance = 60,  clamp_value = 5,
     ambient_light = TRUE, backgroundhigh = "#010005", backgroundlow = "black",
     parallel = TRUE, width = 800, height = 500, samples = 600
 )
