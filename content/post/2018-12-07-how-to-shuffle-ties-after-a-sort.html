@@ -30,13 +30,13 @@ gene_exp
 ## # A tibble: 9 x 2
 ##   gene_name   exp
 ##   &lt;chr&gt;     &lt;dbl&gt;
-## 1 ENSG01     2.60
+## 1 ENSG01     2.68
 ## 2 ENSG02     0   
-## 3 ENSG03     2.21
+## 3 ENSG03     2.24
 ## 4 ENSG04     0   
-## 5 ENSG05     2.05
+## 5 ENSG05     3.31
 ## 6 ENSG06     0   
-## 7 ENSG07     2.36
+## 7 ENSG07     2.26
 ## 8 ENSG08     0   
 ## 9 ENSG09     0
 
@@ -44,10 +44,10 @@ gene_exp[order(gene_exp$exp, decreasing = TRUE), ]
 ## # A tibble: 9 x 2
 ##   gene_name   exp
 ##   &lt;chr&gt;     &lt;dbl&gt;
-## 1 ENSG01     2.60
-## 2 ENSG07     2.36
-## 3 ENSG03     2.21
-## 4 ENSG05     2.05
+## 1 ENSG05     3.31
+## 2 ENSG01     2.68
+## 3 ENSG07     2.26
+## 4 ENSG03     2.24
 ## 5 ENSG02     0   
 ## 6 ENSG04     0   
 ## 7 ENSG06     0   
@@ -59,10 +59,10 @@ gene_exp[order(gene_exp$exp, decreasing = TRUE), ]
 ## # A tibble: 9 x 2
 ##   gene_name   exp
 ##   &lt;chr&gt;     &lt;dbl&gt;
-## 1 ENSG01     2.60
-## 2 ENSG07     2.36
-## 3 ENSG03     2.21
-## 4 ENSG05     2.05
+## 1 ENSG05     3.31
+## 2 ENSG01     2.68
+## 3 ENSG07     2.26
+## 4 ENSG03     2.24
 ## 5 ENSG02     0   
 ## 6 ENSG04     0   
 ## 7 ENSG06     0   
@@ -90,15 +90,15 @@ where we first split the data frame, apply a shuffling if needed, and combine it
 ## # A tibble: 9 x 2
 ##   gene_name   exp
 ##   &lt;chr&gt;     &lt;dbl&gt;
-## 1 ENSG01     2.60
-## 2 ENSG07     2.36
-## 3 ENSG03     2.21
-## 4 ENSG05     2.05
-## 5 ENSG06     0   
-## 6 ENSG09     0   
-## 7 ENSG02     0   
-## 8 ENSG08     0   
-## 9 ENSG04     0</code></pre>
+## 1 ENSG05     3.31
+## 2 ENSG01     2.68
+## 3 ENSG07     2.26
+## 4 ENSG03     2.24
+## 5 ENSG04     0   
+## 6 ENSG06     0   
+## 7 ENSG08     0   
+## 8 ENSG09     0   
+## 9 ENSG02     0</code></pre>
 <p>Here our ties are correctly shuffled. \o/</p>
 <p>Actually, never mind, the grouping is totally unnecessary,
 one can simply shuffle the dataset first, and sort it later:</p>
@@ -108,15 +108,15 @@ one can simply shuffle the dataset first, and sort it later:</p>
 ## # A tibble: 9 x 2
 ##   gene_name   exp
 ##   &lt;chr&gt;     &lt;dbl&gt;
-## 1 ENSG01     2.60
-## 2 ENSG07     2.36
-## 3 ENSG03     2.21
-## 4 ENSG05     2.05
-## 5 ENSG09     0   
-## 6 ENSG02     0   
-## 7 ENSG08     0   
+## 1 ENSG05     3.31
+## 2 ENSG01     2.68
+## 3 ENSG07     2.26
+## 4 ENSG03     2.24
+## 5 ENSG08     0   
+## 6 ENSG04     0   
+## 7 ENSG02     0   
 ## 8 ENSG06     0   
-## 9 ENSG04     0</code></pre>
+## 9 ENSG09     0</code></pre>
 <p>A second approach could be to generate a column of random value and
 use it to breaks the ties in the sort:</p>
 <pre class="r"><code>gene_exp %&gt;%
@@ -126,15 +126,15 @@ use it to breaks the ties in the sort:</p>
 ## # A tibble: 9 x 2
 ##   gene_name   exp
 ##   &lt;chr&gt;     &lt;dbl&gt;
-## 1 ENSG01     2.60
-## 2 ENSG07     2.36
-## 3 ENSG03     2.21
-## 4 ENSG05     2.05
-## 5 ENSG08     0   
+## 1 ENSG05     3.31
+## 2 ENSG01     2.68
+## 3 ENSG07     2.26
+## 4 ENSG03     2.24
+## 5 ENSG06     0   
 ## 6 ENSG02     0   
 ## 7 ENSG04     0   
 ## 8 ENSG09     0   
-## 9 ENSG06     0</code></pre>
+## 9 ENSG08     0</code></pre>
 <p>It’s working too! \o/</p>
 <p>There is even no need to create the new column at all:</p>
 <pre class="r"><code>gene_exp %&gt;%
@@ -142,15 +142,15 @@ use it to breaks the ties in the sort:</p>
 ## # A tibble: 9 x 2
 ##   gene_name   exp
 ##   &lt;chr&gt;     &lt;dbl&gt;
-## 1 ENSG01     2.60
-## 2 ENSG07     2.36
-## 3 ENSG03     2.21
-## 4 ENSG05     2.05
-## 5 ENSG04     0   
-## 6 ENSG09     0   
-## 7 ENSG06     0   
-## 8 ENSG08     0   
-## 9 ENSG02     0</code></pre>
+## 1 ENSG05     3.31
+## 2 ENSG01     2.68
+## 3 ENSG07     2.26
+## 4 ENSG03     2.24
+## 5 ENSG08     0   
+## 6 ENSG06     0   
+## 7 ENSG02     0   
+## 8 ENSG04     0   
+## 9 ENSG09     0</code></pre>
 <p>Since we now have two approaches, a benchmark is needed to compare them speed-wise.
 We will do it on a larger dataset to be a bit more realistic:</p>
 <pre class="r"><code>gene_exp &lt;- tibble(
@@ -160,18 +160,18 @@ We will do it on a larger dataset to be a bit more realistic:</p>
 
 gene_exp
 ## # A tibble: 10,000 x 2
-##    gene_name    exp
-##    &lt;chr&gt;      &lt;dbl&gt;
-##  1 ENSG01    -0.399
-##  2 ENSG02     0    
-##  3 ENSG03     1.22 
-##  4 ENSG04     0    
-##  5 ENSG05     1.62 
-##  6 ENSG06     0    
-##  7 ENSG07     1.91 
-##  8 ENSG08     0    
-##  9 ENSG09     2.37 
-## 10 ENSG010    0    
+##    gene_name   exp
+##    &lt;chr&gt;     &lt;dbl&gt;
+##  1 ENSG01    1.81 
+##  2 ENSG02    0    
+##  3 ENSG03    1.96 
+##  4 ENSG04    0    
+##  5 ENSG05    0.570
+##  6 ENSG06    0    
+##  7 ENSG07    1.41 
+##  8 ENSG08    0    
+##  9 ENSG09    2.32 
+## 10 ENSG010   0    
 ## # ... with 9,990 more rows
 
 library(microbenchmark)
