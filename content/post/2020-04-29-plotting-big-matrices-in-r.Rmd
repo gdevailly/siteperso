@@ -33,11 +33,11 @@ this matrix than pixels in your screen - 1080 vertical pixels in an HD screen (u
 
 The problem with plotting matrix that have more lines than pixels in the screen is precisely that: each pixel will have to represent several values from the matrix. R default behaviour in that case might not be optimal for what we intend to show.
 
-## An exemple with numeric data 
+## An example with numeric data 
 
 Let's start with the generation of some fake data, to mimic what one can obtain with 
 [epigenomics data](https://gdevailly.netlify.app/post/how-to-shuffle-ties-after-a-sort/).
-I'm trying to generate a column-centered signal, becoming stronger an the rows, while keeping some randomness. I'll leave the code for reproducibility reasons, but 
+I'm trying to generate a column-centered signal, becoming stronger along the rows, while keeping some randomness. I'll leave the code for reproducibility reasons, but 
 you don't need to understand this part to understand what comes next:
 
 
@@ -72,15 +72,15 @@ image(
 box() # adding a box around the heatmap
 ```
 
-At first one might think that all is well. We can see some signal, at the centre, stronger on top than on the bottom. But with 20,000 rows in the matrix, we should have obtain a much less noisy image.
+At first one might think that all is well. We can see some signal, at the centre, stronger on top than on the bottom. But with 20,000 rows in the matrix, the image should have been much less noisy.
 Here we have 20,000 lines in our matrix, and a few hundred pixels in this png image file. 
-So R must somehow decide how to summarize the values of several cells to draw a single pixel.
+So R must somehow decide how to summarise the values of several cells to draw a single pixel.
 It seems that R picks only one random cell behind the pixel (probably the first or the last one) and use this value to fill the entire pixel, leading to **strong random downsampling**.
 
 A solution could be to make a png file 20,000 pixels high to avoid this downsampling. But the resulting file will be a bit too heavy for convenience, and we would need to increase text sizes and margins accordingly.
 
-Some graphical devices (for example `pdf()` but not `png()`), will render the `image()` differently depending on its parameter `useRaster` (`FALSE` by default). Puting it to `TRUE` might help in some situations. According to [Wikipedia](https://en.wikipedia.org/wiki/Rasterisation),
-rasterisation *is the task of taking an image described in a vector graphics format [...] and converting it into a raster image (a series of pixels)*. The rasterisation algorythm will try to resume several cells of the matrix in a single pixel. Let's try it:
+Some graphical devices (for example `pdf()` but not `png()`), will render the `image()` differently depending on its parameter `useRaster` (`FALSE` by default). Putting it to `TRUE` might help in some situations. According to [Wikipedia](https://en.wikipedia.org/wiki/Rasterisation),
+rasterisation *is the task of taking an image described in a vector graphics format [...] and converting it into a raster image (a series of pixels)*. The rasterisation algorithm will try to resume several cells of the matrix in a single pixel. Let's try it:
 
 ```{r fst_pdf}
 pdf("../../static/files/big_hm_1.pdf")
@@ -102,7 +102,7 @@ image(
     col = colorRampPalette(c("white", "darkorange", "black"))(30),
     breaks = c(seq(0, 3, length.out = 30), 100),
     useRaster = TRUE,
-    main = "With rasterization"
+    main = "With rasterisation"
 )
 
 dev.off()
@@ -118,17 +118,17 @@ Firefox's pdf renderer give up altogether and refuse to render the rasterised im
 
 While this pdf file weight 5 Mo, running the same code using the `svg()` device leads to the creation of a 200 Mo svg file! Nonetheless, it seems that rasterisation works well for svg files too.
 
-The rasterisation try to summerise all the different values behind each pixel by taking their mean.
+The rasterisation try to summarise all the different values behind each pixel by taking their mean.
 But we can do the same process ourselves, with two benefits: we get rid of the variability
-between the different pdf reader softwares, and it will work even for non-vector devices such as png,
+between the different pdf reader software, and it will work even for non-vector devices such as png,
 greatly limiting the final weight of the image.
 
-Th idea is to reduce the matrix size **before** making the plot by applying a function (for example, `mean()`) that will
+The idea is to reduce the matrix size **before** making the plot by applying a function (for example, `mean()`) that will
 summarise several cells into one. I'll suggest this small function (first seen on 
 [canSnippet](https://cansnippet.bioinfo-fr.net/details.php?id=3)):
 
 ```{r redim_matrix}
-# reduce matrix size, using a summarizing function (default, mean)
+# reduce matrix size, using a summarising function (default, mean)
 redim_matrix <- function(
     mat,
     target_height = 100,
@@ -194,7 +194,7 @@ box()
 par(oldpar) # restoring margin size to default values
 ```
 
-Much better! Paradoxically, we can better grasp the complexity of the data by summarising it before plotting, instead of letting R poorly handle the overploting issue!
+Much better! Paradoxically, we can better grasp the complexity of the data by summarising it before plotting, instead of letting R poorly handle the overplotting issue!
 
 ## Sparse matrix
 
@@ -206,7 +206,7 @@ I encountered this case when working on eQTL (a
 [QTL](https://en.wikipedia.org/wiki/Quantitative_trait_locus) study
 were the phenotype is the level of expression of a gene). The aim is to identify
 Single Nucleotide Polymorphisms (SNP) that are associated with changes in gene expression level in a tissue.
-A statistical test is perform for each SNP and each expressed gene, resulting in many p-values.
+A statistical test is done for each SNP and each expressed gene, resulting in many p-values.
 
 In this case, we had roughly 20,000 expressed genes and 45,000 SNP, resulting in a 20,000 x 45,000
 matrix of p-values. Most of the p-values are not significant, with only a minority being very small
@@ -370,7 +370,7 @@ Heatmap(
 
 ```
 
-The `Heatmap()` function does have some parameters that suggest using *rasterization* in cases of big matrices,
+The `Heatmap()` function does have some parameters that suggest using *rasterisation* in cases of big matrices,
 but as far as I can tell, I see no difference concerning the overplotting issue.
 ```{r ComplexHeatmapRaster}
 Heatmap(
