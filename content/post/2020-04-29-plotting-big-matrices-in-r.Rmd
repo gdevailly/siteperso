@@ -25,19 +25,23 @@ ragg_png = function(..., res = 192) {
 knitr::opts_chunk$set(dev = "ragg_png", fig.ext = "png")
 ```
 
-In genomics, and I assume in many other -omics or big data fields, we often try to 
+In genomics, and in many other -omics or big data fields, we often try to 
 [plot big matrices](https://gdevailly.netlify.app/post/how-to-shuffle-ties-after-a-sort/).
 By big matrices, I mean matrices that have more columns and/or rows than pixels in your device.
-For example, if we have ~20,000 genes in our dataset, and a 50 column-matrix with one line per gene (20,000), then there are likely more lines in
-this matrix than pixels in your screen - 1080 vertical pixels in an HD screen (unless you're reading this in a fancy future of hyper high definition).
+For example, if we have a 50 column-matrix with one line per gene (~20,000 lines),
+then there are likely more lines in
+this matrix than pixels in your screen - 1080 vertical pixels in an HD screen 
+(unless you're reading this in a fancy future of hyper high definition).
 
-The problem with plotting matrix that have more lines than pixels in the screen is precisely that: each pixel will have to represent several values from the matrix. R default behaviour in that case might not be optimal for what we intend to show.
+The problem with plotting matrix that have more lines than pixels in the screen is precisely that:
+each pixel will have to represent several values from the matrix.
+R's default behaviour in that case might not be optimal for what we intend to show.
 
 ## An example with numeric data 
 
-Let's start with the generation of some fake data, to mimic what one can obtain with 
+Let's start with the generation of some toy data, to mimic what one can obtain with 
 [epigenomics data](https://gdevailly.netlify.app/post/how-to-shuffle-ties-after-a-sort/).
-I'm trying to generate a column-centered signal, becoming stronger along the rows, while keeping some randomness. I'll leave the code for reproducibility reasons, but 
+I'm trying to generate a column-centered signal, which becomes stronger along the rows, while keeping some randomness. I'll leave the code for reproducibility reasons, but 
 you don't need to understand this part to understand what comes next:
 
 
@@ -59,7 +63,7 @@ dim(genmat)
 
 ```
 
-Many R function can produce a plot from a matrix, such as `heatmap()`, `heatmap.2()` or `ComplexHeatmap::Heatmap()` (or even `ggplot2::geom_raster()` with some data reshaping), but most of those use the `image()` function under the hood (it makes a colourful image of the matrix). We will be using mostly this function here. 
+Many R functions can produce a plot from a matrix, such as `heatmap()`, `heatmap.2()` or `ComplexHeatmap::Heatmap()` (or even `ggplot2::geom_raster()` with some data reshaping). Most of those use the `image()` function under the hood (it makes a colourful image of the matrix). We will be using mostly this function here. 
 
 ```{r first_plot, fig.height = 6, fig.width = 4, cache = FALSE}
 oldpar <- par(mar = rep(0.2, 4)) # reducing plot margins
@@ -72,12 +76,12 @@ image(
 box() # adding a box around the heatmap
 ```
 
-At first one might think that all is well. We can see some signal, at the centre, stronger on top than on the bottom. But with 20,000 rows in the matrix, the image should have been much less noisy.
+At first one might think that all is well. We can see some signal, at the centre, stronger on top than on the bottom. However, with 20,000 rows in the matrix, the image should have been much less noisy.
 Here we have 20,000 lines in our matrix, and a few hundred pixels in this png image file. 
 So R must somehow decide how to summarise the values of several cells to draw a single pixel.
-It seems that R picks only one random cell behind the pixel (probably the first or the last one) and use this value to fill the entire pixel, leading to **strong random downsampling**.
+It seems that R picks only one cell behind the pixel (randomly? or probably the first or the last one) and use this value to fill the entire pixel, leading to **strong random downsampling**.
 
-A solution could be to make a png file 20,000 pixels high to avoid this downsampling. But the resulting file will be a bit too heavy for convenience, and we would need to increase text sizes and margins accordingly.
+A solution could be to make a png file 20,000 pixels high to avoid this downsampling. The resulting file will be a bit too heavy for convenience, and we would need to increase text sizes and margins accordingly.
 
 Some graphical devices (for example `pdf()` but not `png()`), will render the `image()` differently depending on its parameter `useRaster` (`FALSE` by default). Putting it to `TRUE` might help in some situations. According to [Wikipedia](https://en.wikipedia.org/wiki/Rasterisation),
 rasterisation *is the task of taking an image described in a vector graphics format [...] and converting it into a raster image (a series of pixels)*. The rasterisation algorithm will try to resume several cells of the matrix in a single pixel. Let's try it:
@@ -108,18 +112,18 @@ image(
 dev.off()
 ```
 
-The resulting pdf file is available [here (pdf)](/files/big_hm_1.pdf). But the results vary greatly depending on the *software one use to view the pdf file*:
+The resulting pdf file is available [here (pdf)](/files/big_hm_1.pdf). The results vary greatly depending on the *software one use to view the pdf file*:
 
-![Screenshot of pdf](/img/posts/hm1_pdf.png)
+![](/img/posts/hm1_pdf.png)
 
 Acrobat, Edge and Okular render the file properly: we can see a much finer representation of the data with rasterisation. 
 Evince and SumatraPDF somehow inverse the rendering, while *veiling* the non-rastered version.
-Firefox's pdf renderer give up altogether and refuse to render the rasterised image (at least on Windows 10, it does render it properly on GNU/Linux).
+Firefox's pdf renderer gives up and refuses to render the rasterised image (at least on Windows 10, it does render it properly on GNU/Linux).
 
-While this pdf file weight 5 Mo, running the same code using the `svg()` device leads to the creation of a 200 Mo svg file! Nonetheless, it seems that rasterisation works well for svg files too.
+While this pdf file weights 5 Mo, running the same code using the `svg()` device leads to the creation of a 200 Mo svg file! Nonetheless, it seems that rasterisation works well for svg files too.
 
-The rasterisation try to summarise all the different values behind each pixel by taking their mean.
-But we can do the same process ourselves, with two benefits: we get rid of the variability
+The rasterisation tries to summarise all the different values behind each pixel by taking their mean.
+We can do the same process ourselves, with two benefits: we get rid of the variability
 between the different pdf reader software, and it will work even for non-vector devices such as png,
 greatly limiting the final weight of the image.
 
@@ -194,15 +198,15 @@ box()
 par(oldpar) # restoring margin size to default values
 ```
 
-Much better! Paradoxically, we can better grasp the complexity of the data by summarising it before plotting, instead of letting R poorly handle the overplotting issue!
+Much better! Paradoxically, we can better grasp the complexity of the data by summarising it before plotting it, instead of letting R handle poorly the overplotting issue!
 
 ## Sparse matrix
 
-In some cases, averaging the values might not be the best to represent our data. 
+In some cases, taking the average values might not be the best way to represent our data. 
 For example, if the matrix is sparse, we might not want to scale down the few isolated values with all those surrounding zeroes.
 Instead, taking the maximal value might lead to a more informative representation.
 
-I encountered this case when working on eQTL (a
+I encountered this case while working on eQTL (a
 [QTL](https://en.wikipedia.org/wiki/Quantitative_trait_locus) study
 were the phenotype is the level of expression of a gene). The aim is to identify
 Single Nucleotide Polymorphisms (SNP) that are associated with changes in gene expression level in a tissue.
@@ -247,7 +251,7 @@ I do it bellow on the RGB space, but it might be better to do it on the fancy HC
 Instead of `image()` we need to use the `rasterImage()` function to do the plotting.
 
 ```{r categorical_data}
-# some fake data
+# some toy data
 mycolors <- matrix(c(
   sample(c("#0000FFFF", "#FFFFFFFF", "#FF0000FF"), size = 5000, replace = TRUE, prob = c(2, 1, 1)),
   sample(c("#0000FFFF", "#FFFFFFFF", "#FF0000FF"), size = 5000, replace = TRUE, prob = c(1, 2, 1)),
@@ -355,7 +359,7 @@ p1 + p2
 
 ComplexHeatmap is a fantastic [Bioconductor package](https://www.bioconductor.org/packages/release/bioc/html/ComplexHeatmap.html) to plot advanced heatmap with annotations everywhere. 
 
-Plotting our original matrix suggest that the package suffers from the same overplotting issue, displaying only a sub-sample of the cells, instead of averaging their values on a per-pixel basis.
+Plotting our original matrix suggest that the package suffers from the same overplotting issue, displaying only a sub-sample of the cells, instead of taking the average value on a per-pixel basis.
 
 ```{r ComplexHeatmap}
 suppressPackageStartupMessages(library(ComplexHeatmap))
@@ -388,6 +392,6 @@ Heatmap(
 ## Conclusion
 In R, reduce your big matrices before plotting them to better see the small details. Else you will have a sub-optimal plots.
 
-The main issue with this process is that you will have to manually manage the decorations (axes, side colour bars, dendrograms, etc.), which is laborious.
+The main issue with this process is that you will have to manage manually the decorations (axes, side colour bars, dendrograms, etc.), which is laborious.
 
 Thanks to [Mathurin](https://bioinfo-fr.net/author/mathurin), [Kumquat ](https://bioinfo-fr.net/author/kumquat) and [lhtd](https://bioinfo-fr.net/author/_lhtd_) for proofreading. A French version of this post was published one week early on the blog [bioinfo-fr.net](https://bioinfo-fr.net/creer-des-heatmaps-a-partir-de-grosses-matrices-en-r).
