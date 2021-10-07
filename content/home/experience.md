@@ -22,28 +22,33 @@ date_format: Jan 2006
 #   Leave `date_end` empty if it's your current employer.
 #   Begin multi-line descriptions with YAML's `|2-` multi-line prefix.
 experience:
-  - title: CEO
-    company: GenCoin
-    company_url: ''
-    company_logo: org-gc
-    location: California
-    date_start: '2021-01-01'
+  - title: Researcher (CR)
+    company: INRAE
+    company_url: 'https://www.inrae.fr/en'
+    # company_logo: org-gc
+    location: Toulouse, France
+    date_start: '2017-11-01'
     date_end: ''
-    description: |2-
-        Responsibilities include:
+    description: Researcher in farm animal genetics & epigenetics 
         
-        * Analysing
-        * Modelling
-        * Deploying
-        
-  - title: Professor of Semiconductor Physics
-    company: University X
-    company_url: ''
-    company_logo: org-x
-    location: California
-    date_start: '2016-01-01'
-    date_end: '2020-12-31'
-    description: Taught electronic engineering and researched semiconductor physics.
+  - title: Post-doctoral Researcher
+    company: The Roslin Institute, University of Edinburgh
+    company_url: 'https://www.ed.ac.uk/roslin'
+    # company_logo: org-x
+    location: Edinburgh, UK
+    date_start: '2015-01-01'
+    date_end: '2017-10-31'
+    description: Bioinformatics of epigenomics
+    
+  - title: PhD student
+    company: Cancer Research Center of Lyon
+    company_url: 'https://www.crcl.fr/en/home/'
+    # company_logo: org-x
+    location: Lyon, France
+    date_start: '2011-09-01'
+    date_end: '2014-12-31'
+    description: DNA methylation and oncogenic transformation
+    
 
 design:
   columns: '2'

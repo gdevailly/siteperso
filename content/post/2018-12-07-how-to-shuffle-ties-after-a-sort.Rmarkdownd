@@ -1,0 +1,120 @@
+---
+title: How to shuffle ties after a sort?
+author: Guillaume Devailly
+date: '2018-12-07'
+slug: how-to-shuffle-ties-after-a-sort
+categories:
+  - R
+tags:
+  - R
+header:
+  caption: ''
+  image: ''
+math: true
+---
+
+When sorting a large table according to a specific metric (let's say gene expression value),
+it is frequent to have ties for certain values (for example, 0 expression values).
+In most version of sorting, the order of the ties is preserved by the sorting.
+For example, with the base function `order`:
+
+```{r, collapse=TRUE}
+suppressPackageStartupMessages(library(tidyverse))
+
+gene_exp <- tibble(
+    gene_name = paste0("ENSG0", 1:9),
+    exp = c(rbind(rnorm(4, mean = 2), c(0, 0, 0, 0)), 0)
+)
+
+gene_exp
+
+gene_exp[order(gene_exp$exp, decreasing = TRUE), ]
+```
+
+Or with `dplyr::arrange`:
+```{r, collapse=TRUE}
+gene_exp %>%
+    arrange(desc(exp))
+```
+
+This can lead to ungraceful artefacts in some plots.
+For example, in the plot bellow we look at a certain epigenetic mark (H3K36me3)
+at middle exons (neither first nor last exons) according to the exon inclusion ratio metric
+(or $\psi$):
+
+![H3K36me3 at middle exons, unshuffled.](/post/2018-12-07-how-to-shuffle-ties-after-a-sort_files/E005_unshuffled.png)
+
+Here, many exons have $\psi = 1$, and their order default to a genomic coordinate ordering.
+We can see some dark horizontal stripes, that may reflect contiguous chromatin domains
+but distract us from the main point(s).
+
+It might be better to shuffle the rows of our table that correspond to ties after our sorting.
+
+Thinking about how to do it, the first approach that came to my mind was a split - apply - combine,
+where we first split the data frame, apply a shuffling if needed, and combine it back. With our toy example:
+```{r, collapse=TRUE}
+gene_exp %>%
+    group_by(exp) %>%
+    sample_frac(size = 1, replace = FALSE) %>% # shuffeling within each group
+    ungroup() %>%
+    arrange(desc(exp))
+```
+Here our ties are correctly shuffled. \\o/
+
+Actually, never mind, the grouping is totally unnecessary,
+one can simply shuffle the dataset first, and sort it later:
+```{r, collapse=TRUE}
+gene_exp %>%
+    sample_frac(size = 1, replace = FALSE) %>% # shuffeling within each group
+    arrange(desc(exp))
+```
+
+A second approach could be to  generate a column of random value and
+use it to breaks the ties in the sort:
+```{r, collapse=TRUE}
+gene_exp %>%
+    mutate(rand = runif(nrow(gene_exp))) %>%
+    arrange(desc(exp), rand) %>%
+    select(-rand)
+```
+
+It's working too! \\o/
+
+There is even no need to create the new column at all:
+```{r, collapse=TRUE}
+gene_exp %>%
+    arrange(desc(exp), runif(nrow(gene_exp)))
+```
+
+Since we now have two approaches, a benchmark is needed to compare them speed-wise.
+We will do it on a larger dataset to be a bit more realistic:
+```{r, collapse=TRUE}
+gene_exp <- tibble(
+    gene_name = paste0("ENSG0", 1:10000),
+    exp = c(rbind(rnorm(5000, mean = 2), rep(0, 5000)))
+)
+
+gene_exp
+
+library(microbenchmark)
+
+microbenchmark(
+
+    "shuffle_sort" = gene_exp %>%
+        sample_frac(size = 1, replace = FALSE) %>%
+        arrange(desc(exp)),
+
+    "random_column_unif" = gene_exp %>%
+        arrange(desc(exp), runif(nrow(gene_exp))),
+
+    "random_column_norm" = gene_exp %>%
+        arrange(desc(exp), rnorm(nrow(gene_exp)))
+
+) %>% autoplot() +
+    theme_bw(base_size = 16)
+```
+
+And now I have stacked profiles of epigenetic marks that smooth-out unwanted irregularities,
+by shuffling the ties:
+
+![H3K36me3 at middle exons, ties are now shuffled](/post/2018-12-07-how-to-shuffle-ties-after-a-sort_files/E005_shuffled.png)
