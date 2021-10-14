@@ -8,15 +8,12 @@ categories:
 tags:
     - R
     - data visualisaton
-header:
-    caption: ''
-image: ''
 math: true
 draft: false
 ---
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(collapse = TRUE, cache = TRUE)
+knitr::opts_chunk$set(collapse = TRUE, cache = FALSE)
 # https://www.jumpingrivers.com/blog/r-knitr-markdown-png-pdf-graphics/
 ragg_png = function(..., res = 192) {
   ragg::agg_png(..., res = res, units = "in")
@@ -339,12 +336,15 @@ Heatmap(
   col = circlize::colorRamp2(c(0, 1.5, 3), c("white", "darkorange", "black")), # our colour palette
   cluster_rows = FALSE, cluster_columns = FALSE,
   show_heatmap_legend = FALSE,
-  column_title = "No rasterisation"
+  column_title = "No rasterisation",
+  use_raster = FALSE
 )
 ```
 
 The `Heatmap()` function does have some parameters that suggest using *rasterisation* in cases of big matrices,
-but as far as I can tell, I see no difference concerning the overplotting issue.
+~~but as far as I can tell, I see no difference concerning the overplotting issue.~~
+which now works well! (see the post-scriptum of this post)
+
 ```{r ComplexHeatmapRaster}
 Heatmap(
   genmat[nrow(genmat):1, ],
