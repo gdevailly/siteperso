@@ -1,0 +1,29 @@
+---
+title: VizFaDa
+author: Guillaume Devailly
+date: '2019-11-08'
+slug: vizfada
+categories:
+  - project
+  - grant
+tags:
+  - FAANG
+  - data visualisation
+external_link: ''
+highlight: yes
+math: no
+summary: 'Visualisation of FAANG data'
+---
+
+VizFaDa, for visualisation of FAANG data, aims at adding data visualisations to the [FAANG data portal](https://data.faang.org/home).
+It was funded by the *Agence Nationale de la Recherche* in 2019 on the
+[Flash - Open Science](https://anr.fr/fr/detail/call/appel-flash-science-ouverte-pratiques-de-recherche-et-donnees-ouvertes/) call,
+and will start in January 2020 for two years.
+
+The proposal of the project is available to here : [vizfada_proposal.pdf](/files/vizfada_proposal.pdf).
+It is inspired by two previous web application exploring human and model organisms data:
+[heat*seq](https://joshiapps.cbu.uib.no/HeatStarSeq_gh/application/heatstarseq/) for correlation heatmaps between experiments,
+and [PEREpigenomics](https://joshiapps.cbu.uib.no/perepigenomics_app/) for exploring associations between epigenetic marks and transcription.
+
+We developped an R package, `{epistack}`, to ease the generations of the epigenomic visualisations.
+The package is available [on github](https://github.com/GenEpi-GenPhySE/epistack).

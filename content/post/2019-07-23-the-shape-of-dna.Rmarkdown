@@ -1,0 +1,258 @@
+---
+title: The shape of DNA
+author: Guillaume Devailly
+date: '2019-07-23'
+slug: the-shape-of-dna
+categories:
+  - opinion
+  - R
+tags:
+  - DNA
+  - rayrender
+  - rant
+  - R
+draft: false
+---
+
+## Graphical abstract:
+
+![](/img/posts/graphical_abstract.png)
+
+---
+
+Molecular biologists and biochemists are quite sensitive on the topic of DNA representation.
+Many of them will be triggered when the looping of the DNA is misrepresented as a left-handed helix instead of a right-handed one
+(what we mean by that is that when one looks at DNA from 'within' the helix, they turn clock-wise as they get more distant).
+I am not quite offended by this mistake, as I hardly remember if (B-)DNA is right-handed or left-handed, 
+and what right-handed and left-handed means in the context of an helix.
+
+I am paying more attention to the fact that the DNA double-helix has **two grooves of unequal size**, one big **major groove**, 
+and a narrow **minor groove**. It matters because transcription factors can bind either to the major groove
+or to the minor groove, and the rules governing their sequence specificity won't be the same in each case.
+
+I sometimes do complain about that:
+
+<blockquote class="twitter-tweet"><p lang="en" dir="ltr">Should someone tell them about the whole major/minor groove thing? <a href="https://t.co/KPq9iFkUge">https://t.co/KPq9iFkUge</a></p>&mdash; Guillaume Devailly (@G_Devailly) <a href="https://twitter.com/G_Devailly/status/1073290319716847616?ref_src=twsrc%5Etfw">December 13, 2018</a></blockquote> <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script> 
+
+As others do:
+
+<blockquote class="twitter-tweet" data-conversation="none"><p lang="en" dir="ltr">GREAT! But &lt;pedant=ON&gt; NO MAJOR/MINOR GROOVE!!! See example below from <a href="https://twitter.com/PDBeurope?ref_src=twsrc%5Etfw">@PDBeurope</a> &lt;/pedant=OFF&gt; :-) ;-)<a href="https://t.co/1rX87naLgg">https://t.co/1rX87naLgg</a></p>&mdash; Geoff Barton 🇪🇺 (@gjbarton) <a href="https://twitter.com/gjbarton/status/1073265247832678401?ref_src=twsrc%5Etfw">December 13, 2018</a></blockquote> <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script> 
+
+And guess what, complaining on twitter can sometime have an impact!
+
+<blockquote class="twitter-tweet"><p lang="en" dir="ltr">The great christmas elves in the <a href="https://twitter.com/emblebi?ref_src=twsrc%5Etfw">@emblebi</a> comms department have created your handy, right handed (right) from left handed (wrong), minor groove containing card for genomics comms professionals. (Even more Hi res media available on demand...) <a href="https://t.co/mQpZHvqDO6">pic.twitter.com/mQpZHvqDO6</a></p>&mdash; Ewan Birney (@ewanbirney) <a href="https://twitter.com/ewanbirney/status/1073615201470169088?ref_src=twsrc%5Etfw">December 14, 2018</a></blockquote> <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script> 
+
+---
+
+My other pet peeve is when artistic views of DNA show unnecessary "asperities" in the texture of DNA to "make it more real"
+**while still representing a very basic rope-ladder shape**.
+
+For examples:
+![](/img/posts/bad_dna_ladder.png)
+
+These visualisations are so popular that any efforts to name and shame will results in either naming the entire universe or hand picking some for biased reasons. I'll hand pick one nonetheless: the homepage of [Genome Biology](https://genomebiology.biomedcentral.com/). `r emo::ji("expressionless")`
+
+![](/img/posts/bad_dna_gb.png)
+
+---
+
+It seems that at some point, some artists began to realise that the DNA rope-ladder was actually made of atoms.
+They decided to represent atoms as spheres, which make sense. But instead of positioning the spheres on realistic positions,
+or by simply downloading available 3D models, they did that:
+
+![](/img/posts/dna-thegrowthop.jpg)
+
+`r emo::ji("person_facepalming")`
+
+And the endless list of bad DNA visualisation goes on.
+
+![](/img/posts/bad_dna_pearl.png)
+
+
+---
+
+I find those view annoying, because we have known the exact structure of the B DNA helix for a long time, with many 3D models freely available! One could take those, apply a bumpy fluorescent blue texture in front of a black background
+and produce similarly impressive artistic views that would be **much closer to the reality**.
+
+Let me try to be clearer:
+
+- my rant is not against the *rope and ladder* view of DNA. It is a useful representation, but for diagram and such.
+
+- it is not against artistic views, they are both useful and often spectacular when well done.
+
+- it is about one **bad** type of artistic view that is representing DNA as a "rope ladder" while adding asperities to make it more *realistic*, ignoring that the atomic structures of DNA had been known since before I was born.
+
+
+Thankfully, the brilliant [PDB's molecule of the month team](http://pdb101.rcsb.org/motm/23) offers us some hope. Let's all admire the DNA molecule:
+![](/img/posts/good-dna.gif)
+
+---
+
+But enough complaining for today, let's try to be a bit more constructive and build our own **scientifically accurate artistic view of DNA with R**!
+
+First we download and parse the PDB structure `1BNA`, which is a structure file of a 12 nucleotide long DNA double helix in B shape. Let's use the [CRAN package](https://cran.r-project.org/package=bio3d) `bio3d`:
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(collapse = TRUE)
+```
+
+
+```{r parse_pdb}
+library(bio3d)
+
+dna <- read.pdb("1BNA")
+
+head(dna$atom)
+```
+
+We keep only the lines and columns that we will use, notably getting rid of a few water molecules.
+
+```{r cleaning}
+library(dplyr)
+
+dnamod <- filter(dna$atom, type == "ATOM" ) %>%
+    select(x, y, z, atom = "elesy")
+
+head(dnamod)
+```
+
+We use the `rayrender` [package](https://github.com/tylermorganwall/rayrender) to hand-craft our scientifically accurate artistic view of a DNA molecule. It is a quite new ray-tracing tool, not particularly designed to render macro-molecules. This means that we have to do some dirty work ourselves.
+
+First we centre the molecule coordinates, to be able to point the virtual camera to the centre of the DNA molecule by simply targeting the XYZ point: `c(0, 0, 0)`.
+
+```{r centering}
+summarise_if(dnamod, is.numeric, min)
+
+summarise_if(dnamod, is.numeric, max)
+
+dnamod <- mutate(dnamod, x = x - mean(x), y = y - mean(y), z = z - mean(z))
+
+summarise_if(dnamod, is.numeric, min)
+
+summarise_if(dnamod, is.numeric, max)
+```
+
+We create a look-up table containing some details about each atom in the molecule. We use some standard, non-artistic, colours first:
+
+```{r look-up}
+unique(dnamod$atom)
+
+elref <- tribble(
+    ~atom, ~atomic_mass, ~color,
+    "C", 12, "lightgrey",
+    "N", 14, "darkblue",
+    "O", 16, "darkred",
+    "P", 31, "darkorange"
+)
+```
+
+Now let's build our model. Rayrender's function `sphere()` is not vectorised. 
+Therefore we call `sphere()` one time per atom, using `purrr::map_dfr()` to be fancy:
+
+```{r object_building}
+library(rayrender)
+library(purrr)
+
+mol <-  map_dfr(
+    unique(dnamod$atom), # one iteration for each tom type, C, N, O, P
+    function(ato) {
+        melref = filter(elref, atom == ato)
+        dnamo = filter(dnamod, atom == ato)
+        map_dfr(seq_len(nrow(dnamo)), function(i) { # one iteration per atom
+            sphere(
+                x = dnamo$x[i], y = dnamo$y[i], z = dnamo$z[i],
+                radius = 0.4 * melref$atomic_mass^(1/3),
+                # radius is proportionnal to the cubic root of the atomic mass. 
+                # 0.4 is a magic number leading to a visualisation that doesn't look too bad.
+                material = diffuse(color = melref$color)
+            )
+        })
+    }
+)
+
+```
+
+We now render our first scene. Rayrender is basically ray-tracing on CPU, which means it is quite slow. So it's best to render small scenes first to find the appropriate parameters, before rendering a beautiful one once you are happy with the scene.
+
+A scene is composed of objects (here described in the `mol` tibble), and a camera that has a location, and point to something.
+We centred our object, so we tell the camera to point at `c(0, 0, 0)`. It's probably best if the camera is somewhere outside of the object. I played a bit with the `lookfrom` parameter, and found the values `c(60, 0, -10)` reasonably satisfying. So behold the following rendering:
+
+```{r scientific, fig.width=8, fig.height=5, fig.cap="Scientifically accurate, non artistic view of DNA."}
+render_scene(
+    mol,
+    lookfrom = c(60, 0, -10),
+    lookat = c(0, 0, 0),
+    parallel = TRUE, width = 800, height = 500, samples = 100,
+    backgroundhigh = "white", backgroundlow = "white"
+)
+
+```
+
+---
+
+Now let's try to render this non-artistic, a bit boring, view of DNA into an artistic one. I'm no artist, but let's put a darker background, two light sources of different colours, and an invisible metallic mirror in the background to generate some dirty reflections to make the scene less empty. Let's also pick fairly neutral colours for the atoms, and fiddle with the camera `aperture` and `focal distance`.
+
+```{r artistic, fig.width=8, fig.height=5, fig.cap="Scientifically accurate, totally artistic view of DNA."}
+elref <- tribble(
+    ~atom, ~atomic_mass, ~color,
+    "C", 12, "azure1",
+    "N", 14, "azure3",
+    "O", 16, "azure4",
+    "P", 31, "steelblue4"
+)
+
+mol <-  map_dfr(
+    unique(dnamod$atom),
+    function(ato) {
+        melref = filter(elref, atom == ato)
+        dnamo = filter(dnamod, atom == ato)
+        map_dfr(seq_len(nrow(dnamo)), function(i) { # one iteration per atom
+            sphere(
+                x = dnamo$x[i], y = dnamo$y[i], z = dnamo$z[i],
+                radius = 0.4 * (melref$atomic_mass)^(1/3),
+                material = diffuse(color = melref$color)
+            )
+        })
+    }
+) %>% 
+    # first light, magic numbers
+    add_object(sphere(
+        x = 120, y = 50, z = -10, material = light("dodgerblue", intensity = 3000) 
+    )) %>%
+    # second light, magic numbers
+    add_object(sphere(
+        x = 20, y = 70, z = -10, material = light("darkolivegreen1", intensity = 3000) 
+    )) %>%
+    # a big spheric mirror somewhere on the back
+    add_object(sphere(
+        x = -450, y = -100, z = 160, radius = 400, material = metal(fuzz = 0.05) 
+    ))
+
+render_scene(
+    mol,
+    lookfrom = c(60, 0, -10),
+    lookat = c(0, 0, 0),
+    aperture=0.8, focal_distance = 55,  clamp_value = 5,
+    ambient_light = TRUE, backgroundhigh = "#010005", backgroundlow = "black",
+    parallel = TRUE, width = 800, height = 500, samples = 600
+)
+
+```
+
+Not bad! My main regret is that the PDB DNA structure `1BNA` is only 12 nucleotide long. A longer DNA model might be more suitable for artistic representations, but I was too lazy to search for one or build one myself (too bad for you, 16-nucleoride long structure [3BSE](https://www.rcsb.org/structure/3BSE)).
+
+---
+
+To conclude, I'll offer a stay-at-home challenge: try to render your own scientifically accurate artistic view of the DNA molecule, for example by changing a few parameters from this post' script. Then post it on twitter mentioning me ([G_Devailly](https://twitter.com/G_Devailly)), the winner will be retweeted! `r emo::ji("tada")`
+
+*Thanks to schneu for kindly providing some proofreading.*
+
+---
+R session details:
+```{r sessionInfo}
+sessionInfo()
+```
+
+
+
+
