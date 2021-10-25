@@ -79,6 +79,9 @@ I am a researcher in farm animal genetics and epigenetics at GenPhySE, INRAE, lo
 I joined the GenEpi team there in 2017, after a postdoctoral position in Anagha Joshi’s group at the Roslin Institute (Edinburgh, UK).
 
 Now a computational biologist, I started at the bench studying binding sites of the DNA methylation reader MBD2 during oncogenic transformation during my PhD.
-In my postdoc, I developed visualisations and webtools of transcriptomic and epigenomic data, including Heat*seq and PEREpigenomics.
-I am building up my geneticist skills at INRAE, doing eQTL detection in pigs, and planning projects in satiety regulation through induced epi-mutations.
+In my postdoc, I developed visualisations and webtools of transcriptomic and epigenomic data, including [Heat*seq](https://joshiapps.cbu.uib.no/HeatStarSeq_gh/application/heatstarseq/) and [PEREpigenomics](https://joshiapps.cbu.uib.no/perepigenomics_app/).
+
+I am building up my geneticist skills at INRAE, doing [eQTL detection in pigs](https://gdevailly.netlify.app/project/pigheat/),
+[FAANG data visualisations](https://gdevailly.netlify.app/project/vizfada/),
+and planning projects in [satiety regulation](https://gdevailly.netlify.app/project/rosepigs/) through induced epi-mutations.
 
