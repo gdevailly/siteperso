@@ -1,6 +1,8 @@
 # History files
 .Rhistory
 .Rapp.history
+.DS_Store
+Thumbs.db
 
 # Example code in package build process
 *-Ex.R
@@ -18,6 +20,10 @@ vignettes/*.pdf
 # from Yuri's template
 .RData
 .Ruserdata
-public
-blogdown
+/public
+/blogdown
 .Rproj.user
+
+# netlify
+/resources/
+/public/
