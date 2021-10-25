@@ -18,8 +18,8 @@ tags:
 
 We recently developed an R package, named `{epistack}`, to visualise
 epigenomic data. Epistack is available on 
-[github](https://github.com/GenEpi-GenPhySE/epistack), and is submited to
-[Bioconductor](https://github.com/Bioconductor/Contributions/issues/2362).
+[github](https://github.com/GenEpi-GenPhySE/epistack) and 
+[Bioconductor](http://bioconductor.org/packages/devel/bioc/html/epistack.html).
 
 The best place to learn more about it is probably the package's
 [vignette](https://gdevailly.github.io/using_epistack.html).
@@ -73,34 +73,34 @@ epidataset(100)[, 49:52]
 #> GRanges object with 100 ranges and 4 metadata columns:
 #>         seqnames    ranges strand | mcols.V49 mcols.V50      expr       bin
 #>            <Rle> <IRanges>  <Rle> | <numeric> <numeric> <numeric> <numeric>
-#>     [1]     chr1       1-2      * |  0.588191  0.635271   20.0855         1
-#>     [2]     chr1       1-2      * |  0.246766  0.936376   19.4860         1
-#>     [3]     chr1       1-2      * |  0.184405  0.610326   18.9044         1
-#>     [4]     chr1       1-2      * |  0.535331  0.171764   18.3401         1
-#>     [5]     chr1       1-2      * |  0.395371  0.536595   17.7927         1
+#>     [1]     chr1       1-2      * |  0.952068  0.179671   20.0855         1
+#>     [2]     chr1       1-2      * |  0.478568  0.340969   19.4860         1
+#>     [3]     chr1       1-2      * |  0.412846  0.497083   18.9044         1
+#>     [4]     chr1       1-2      * |  0.684431  0.437699   18.3401         1
+#>     [5]     chr1       1-2      * |  0.580179  0.901338   17.7927         1
 #>     ...      ...       ...    ... .       ...       ...       ...       ...
-#>    [96]     chr1       1-2      * | 0.9693966 0.6771167   1.12886         5
-#>    [97]     chr1       1-2      * | 0.7900126 0.8264193   1.09517         5
-#>    [98]     chr1       1-2      * | 0.6305830 0.0362757   1.06248         5
-#>    [99]     chr1       1-2      * | 0.9864813 0.8767359   1.03077         5
-#>   [100]     chr1       1-2      * | 0.0750236 0.4191959   1.00000         5
+#>    [96]     chr1       1-2      * | 0.0516165 0.7985905   1.12886         5
+#>    [97]     chr1       1-2      * | 0.2357467 0.3174062   1.09517         5
+#>    [98]     chr1       1-2      * | 0.6359180 0.2045663   1.06248         5
+#>    [99]     chr1       1-2      * | 0.6136850 0.0915456   1.03077         5
+#>   [100]     chr1       1-2      * | 0.0981223 0.7333909   1.00000         5
 #>   -------
 #>   seqinfo: 1 sequence from an unspecified genome; no seqlengths
 epidataset(10000)[, 49:52]
 #> GRanges object with 10000 ranges and 4 metadata columns:
 #>           seqnames    ranges strand | mcols.V49 mcols.V50      expr       bin
 #>              <Rle> <IRanges>  <Rle> | <numeric> <numeric> <numeric> <numeric>
-#>       [1]     chr1       1-2      * |  1.005145  0.782942   20.0855         1
-#>       [2]     chr1       1-2      * |  1.256760  0.783456   20.0795         1
-#>       [3]     chr1       1-2      * |  0.588724  0.706338   20.0735         1
-#>       [4]     chr1       1-2      * |  0.652003  0.427323   20.0675         1
-#>       [5]     chr1       1-2      * |  0.694746  0.105515   20.0614         1
+#>       [1]     chr1       1-2      * |  0.890472  0.695199   20.0855         1
+#>       [2]     chr1       1-2      * |  0.744390  0.424815   20.0795         1
+#>       [3]     chr1       1-2      * |  0.443652  0.298934   20.0735         1
+#>       [4]     chr1       1-2      * |  0.954323  0.983730   20.0675         1
+#>       [5]     chr1       1-2      * |  0.307858  0.894837   20.0614         1
 #>       ...      ...       ...    ... .       ...       ...       ...       ...
-#>    [9996]     chr1       1-2      * |  0.840803  0.110294    1.0012         5
-#>    [9997]     chr1       1-2      * |  0.193193  0.294286    1.0009         5
-#>    [9998]     chr1       1-2      * |  0.965447  0.874498    1.0006         5
-#>    [9999]     chr1       1-2      * |  0.448220  0.912961    1.0003         5
-#>   [10000]     chr1       1-2      * |  0.550781  0.189312    1.0000         5
+#>    [9996]     chr1       1-2      * |  0.342960 0.6116082    1.0012         5
+#>    [9997]     chr1       1-2      * |  0.389621 0.0192827    1.0009         5
+#>    [9998]     chr1       1-2      * |  0.499694 0.0725932    1.0006         5
+#>    [9999]     chr1       1-2      * |  0.886972 0.9410834    1.0003         5
+#>   [10000]     chr1       1-2      * |  0.243264 0.0821325    1.0000         5
 #>   -------
 #>   seqinfo: 1 sequence from an unspecified genome; no seqlengths
 ```
@@ -110,6 +110,7 @@ The datasets can then be plotted with epistack:
 
 
 ```r
+
 plotEpistack(
   epidataset(10000), 
   zlim = c(0, 3), ylim = c(0, 4), tints = "dodgerblue",
@@ -138,6 +139,7 @@ benchdata <- lapply(sizes, epidataset)
 
 
 ```r
+
 runtimes <- sapply(benchdata, function(x) system.time(
   plotEpistack(
     x, 
@@ -261,6 +263,7 @@ regions unless we shut off rasterization.
 
 
 ```r
+
 runtimes2 <- sapply(1:8, function(i) system.time({
   
   ht_list <- Heatmap(
@@ -351,6 +354,7 @@ plotStackProfileLegend(
 <img src="/post/2021-10-13-epistack-benchmark_files/figure-html/enrichedepistack-1.png" width="672" />
 
 ```r
+
 par(old_par)
 layout(1)
 ```
@@ -387,7 +391,7 @@ sessionInfo()
 #> loaded via a namespace (and not attached):
 #>  [1] locfit_1.5-9.4         Rcpp_1.0.7             lattice_0.20-45       
 #>  [4] circlize_0.4.13        png_0.1-7              assertthat_0.2.1      
-#>  [7] digest_0.6.27          foreach_1.5.1          utf8_1.2.2            
+#>  [7] digest_0.6.28          foreach_1.5.1          utf8_1.2.2            
 #> [10] R6_2.5.1               evaluate_0.14          highr_0.9             
 #> [13] blogdown_1.5           pillar_1.6.2           GlobalOptions_0.1.2   
 #> [16] zlibbioc_1.38.0        rlang_0.4.11           jquerylib_0.1.4       
@@ -395,19 +399,19 @@ sessionInfo()
 #> [22] labeling_0.4.2         stringr_1.4.0          RCurl_1.98-1.3        
 #> [25] munsell_0.5.0          compiler_4.1.1         xfun_0.26             
 #> [28] pkgconfig_2.0.3        shape_1.4.6            htmltools_0.5.2       
-#> [31] tidyselect_1.1.1       tibble_3.1.4           GenomeInfoDbData_1.2.6
+#> [31] tidyselect_1.1.1       tibble_3.1.5           GenomeInfoDbData_1.2.6
 #> [34] bookdown_0.22          codetools_0.2-18       matrixStats_0.60.1    
 #> [37] fansi_0.5.0            viridisLite_0.4.0      crayon_1.4.1          
 #> [40] dplyr_1.0.7            withr_2.4.2            bitops_1.0-7          
-#> [43] jsonlite_1.7.2         gtable_0.3.0           lifecycle_1.0.0       
+#> [43] jsonlite_1.7.2         gtable_0.3.0           lifecycle_1.0.1       
 #> [46] DBI_1.1.1              magrittr_2.0.1         scales_1.1.1          
-#> [49] stringi_1.7.4          farver_2.1.0           XVector_0.32.0        
-#> [52] doParallel_1.0.16      bslib_0.3.0            ellipsis_0.3.2        
+#> [49] stringi_1.7.5          farver_2.1.0           XVector_0.32.0        
+#> [52] doParallel_1.0.16      bslib_0.3.1            ellipsis_0.3.2        
 #> [55] generics_0.1.0         vctrs_0.3.8            RColorBrewer_1.1-2    
 #> [58] rjson_0.2.20           iterators_1.0.13       tools_4.1.1           
 #> [61] glue_1.4.2             purrr_0.3.4            plotrix_3.8-1         
 #> [64] fastmap_1.1.0          yaml_2.2.1             clue_0.3-59           
-#> [67] colorspace_2.0-2       cluster_2.1.2          knitr_1.34            
+#> [67] colorspace_2.0-2       cluster_2.1.2          knitr_1.36            
 #> [70] sass_0.4.0
 ```
 

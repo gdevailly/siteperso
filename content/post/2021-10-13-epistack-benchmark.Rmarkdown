@@ -23,8 +23,8 @@ knitr::opts_chunk$set(
 
 We recently developed an R package, named `{epistack}`, to visualise
 epigenomic data. Epistack is available on 
-[github](https://github.com/GenEpi-GenPhySE/epistack), and is submited to
-[Bioconductor](https://github.com/Bioconductor/Contributions/issues/2362).
+[github](https://github.com/GenEpi-GenPhySE/epistack) and 
+[Bioconductor](http://bioconductor.org/packages/devel/bioc/html/epistack.html).
 
 The best place to learn more about it is probably the package's
 [vignette](https://gdevailly.github.io/using_epistack.html).
