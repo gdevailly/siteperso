@@ -26,5 +26,12 @@ main:
 # Link to a PDF of your resume/CV from the menu.
 # To enable, copy your resume/CV to `static/uploads/resume.pdf` and uncomment the lines below.
   - name: CV
-    url: files/cv-gdevailly-fr.pdf
     weight: 70
+  - name: English (pdf)
+    url: files/cv-gdevailly-en.pdf
+    parent: CV
+  - name: French (pdf)
+    url: files/cv-gdevailly-fr.pdf
+    parent: CV
+
+
