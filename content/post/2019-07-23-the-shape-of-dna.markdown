@@ -288,7 +288,7 @@ render_scene(
 <p class="caption">Figure 2: Scientifically accurate, totally artistic view of DNA.</p>
 </div>
 
-Not bad! My main regret is that the PDB DNA structure `1BNA` is only 12 nucleotide long. A longer DNA model might be more suitable for artistic representations, but I was too lazy to search for one or build one myself (too bad for you, 16-nucleoride long structure [3BSE](https://www.rcsb.org/structure/3BSE)).
+Not bad! My main regret is that the PDB DNA structure `1BNA` is only 12 nucleotide long. A longer DNA model might be more suitable for artistic representations, but I was too lazy to search for one or build one myself (too bad for you, 16-nucleotide long structure [3BSE](https://www.rcsb.org/structure/3BSE)).
 
 ---
 
